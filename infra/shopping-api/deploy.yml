@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopping-api-deployment
+  labels:
+    app: shopping-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shopping-api
+  template:
+    metadata:
+      labels:
+        app: shopping-api
+    spec:
+      containers:
+        - name: shopping-api
+          image: shopping-api:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
