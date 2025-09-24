@@ -1,4 +1,4 @@
-# practice-kubernetes
+# todo-infra
 
 ## Notes
 
