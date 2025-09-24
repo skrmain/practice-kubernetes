@@ -1,14 +1,29 @@
-# Use official Bun image
-FROM oven/bun:latest
+# Use official lightweight Node image
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy files
-COPY package.json .
-COPY server.ts .
+# Install dependencies
+COPY package.json package-lock.json* ./
+RUN npm install
 
-# Expose port
+# Copy source files
+COPY tsconfig.json ./
+COPY server.ts ./
+
+# Build TypeScript -> JavaScript
+RUN npm run build
+
+# ---- Production image ----
+FROM node:20-alpine AS prod
+
+WORKDIR /app
+
+# Copy only built files and dependencies
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+
 EXPOSE 3000
 
-# Run the Bun server
-CMD ["bun", "run", "server.ts"]
+# Run compiled JS instead of ts-node
+CMD ["node", "dist/server.js"]

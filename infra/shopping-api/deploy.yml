@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: shopping-api
-          image: shopping-api:v3
+          image: shopping-api:v1
           imagePullPolicy: Never
           ports:
             - containerPort: 3000

@@ -24,4 +24,14 @@ kubectl port-forward service/shopping-api-service 3000:3000
 
 # To get service url from minikube
 minikube service shopping-api-service
+
+
+# To scale down a deployment -- for temporary stop or reduce the replicas
+kubectl scale deployment <deployment-name> --replicas 0 -n <namespace>
+
+# To delete the deployment
+kubectl delete deployment <deployment-name> -n <namespace>
+
+# To logs all pods logs -- https://kubernetes.io/docs/reference/kubectl/generated/kubectl_logs/
+kubectl logs -f deployment/shopping-api-deployment  --all-pods=true --max-log-requests=11
 ```
