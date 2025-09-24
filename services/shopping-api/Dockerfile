@@ -1,5 +1,5 @@
 # Use official lightweight Node image
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
@@ -9,13 +9,13 @@ RUN npm install
 
 # Copy source files
 COPY tsconfig.json ./
-COPY server.ts ./
+COPY src/ ./src
 
 # Build TypeScript -> JavaScript
 RUN npm run build
 
 # ---- Production image ----
-FROM node:20-alpine AS prod
+FROM node:22-alpine AS prod
 
 WORKDIR /app
 
@@ -26,4 +26,4 @@ COPY --from=build /app/dist ./dist
 EXPOSE 3000
 
 # Run compiled JS instead of ts-node
-CMD ["node", "dist/server.js"]
+CMD ["node", "dist/index.js"]
